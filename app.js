@@ -5,13 +5,13 @@ const bodyParser = require('body-parser');
 const twilio = require('twilio');
 const app = express();
 
-const accountSid = 'ACa814e21ee884e218f4364f7146fbb908';
-const authToken = 'bb77b3444c25c7be0a863525972b1c2d';
+const accountSid = process.env.TWI_ACCOUNT_ID;
+const authToken = process.env.TWI_TOKEN;
 const client = new twilio(accountSid, authToken);
 
-const watsonUser = '83c10da5-17da-4d14-9d0b-ac3a73015727';
-const watsonPsw = 'cJcEwc5MTwye';
-const workspaceSid = '48816453-1ca6-4a1c-9463-3a20b67cecc0';
+const watsonUser = process.env.WATSON_USER;
+const watsonPsw = process.env.WATSON_PSW;
+const workspaceSid = process.env.WATSON_WRK_SPACE;
 
 const conversation = new ConversationV1({
     username: watsonUser,
@@ -52,7 +52,6 @@ app.post('/voicebot', (req, res) => {
     if (message) {
 
         contexts.forEach((value) => {
-            // console.log(value.from);
             if (value.from === number) {
                 context = value.context;
                 contextIndex = index;
@@ -71,7 +70,7 @@ app.post('/voicebot', (req, res) => {
                 console.error(err);
             } else {
                 const reply = wtResponse.output.text[0];
-                // console.log(reply);
+
                 if (context == null) {
                     contexts.push({
                         'from': number,
@@ -97,17 +96,6 @@ app.post('/voicebot', (req, res) => {
         gather.say({voice: 'alice'}, 'Wellcome to the Careerbuilder voice platform, how can I help you?');
         res.send(response.toString());
     }
-
-    
-
-    // response.say({ voice: 'alice' }, 'It is Sandy\'s fault');
-    // res.writeHead(200, {
-    //     'Content-Type': 'text/xml'
-    // });
-    //res.end(response.toString());
-    // res.type('text/xml');
-    // res.send(response.toString());
-
 });
 
 app.post('/twiliobot', (req, res) => {
@@ -129,9 +117,7 @@ app.post('/twiliobot', (req, res) => {
         index++;
     });
 
-    console.log('Recieved message from ' + number + ' saying \'' + message + '\'');
-    // console.log(JSON.stringify(context));
-    // console.log(contexts.length);
+    console.log(`Recieved message from ${number}  saying '${message}'`);
 
     conversation.message({
         input: {
@@ -175,6 +161,6 @@ app.post('/twiliobot', (req, res) => {
 });
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT_NUMBER, () => {
     console.log('server connected');
 });
