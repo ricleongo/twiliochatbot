@@ -1,3 +1,4 @@
+
 require('dotenv').load();
 const express = require('express');
 const ConversationV1 = require('watson-developer-cloud/conversation/v1');
@@ -5,8 +6,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const twilio = require('twilio');
 const app = express();
-
-console.log(process.env);
 
 const accountSid = process.env.TWI_ACCOUNT_ID;
 const authToken = process.env.TWI_TOKEN;
