@@ -1,3 +1,5 @@
+
+require('dotenv').load();
 const express = require('express');
 const ConversationV1 = require('watson-developer-cloud/conversation/v1');
 const mongoose = require('mongoose');
